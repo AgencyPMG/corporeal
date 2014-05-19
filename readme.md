@@ -36,6 +36,8 @@ Add a template.json file that defines your variables inside the template.
 
 ```
 {
+    name: 'MyTemplate',
+    parent: null //you can name your template a sub template here
     variables: [
         {
             name: 'myVar',
