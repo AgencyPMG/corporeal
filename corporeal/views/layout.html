@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Travelocity CMS</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+        <link rel="stylesheet" href="{{baseUrl}}/stylesheets/app.css" />
+        {% block stylesheets %} {% endblock %}
+        <script type="text/javascript">
+            window.baseUrl = '{{baseUrl}}';
+        </script>
+        <script src="{{baseUrl}}/components/modernizr/modernizr.js"></script>
+        <script src="{{baseUrl}}/components/requirejs/require.js" type="text/javascript"></script>
+        <script src="{{baseUrl}}/scripts/main.js" type="text/javascript"></script>
+        {% block scripts %} {% endblock %}
+    </head>
+    <body>
+
+        {% block navbar %}
+        <div class="sticky contain-to-grid">
+            <nav class="top-bar" data-topbar>
+                <ul class="title-area">
+                    <li class="name">
+                        <h1>
+                            <a href="/corporeal/dashboard" title="Datawarehouse">Travelocity CMS</a>
+                        </h1>
+                    </li>
+                </ul>
+                <section class="top-bar-section">
+                    <ul class="left">
+                        {% for menuItem in navmenu.menuItems %}
+                            <li><a href="{{menuItem.href}}">{{menuItem.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            </nav>
+        </div>
+        {% endblock %}
+
+        {% if error != null and error != '' %}
+            {% block alert_error %}
+            <div class="container message-queue">
+                <div class="row">
+                    <div class="small-12 columns">
+                        <div data-alert class="alert-box radius warning">
+                          <strong>Whoops!</strong> {{error}}
+                          <a href="#" class="close">&times;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        {% endif %}
+
+        {% if message != null and message != '' %}
+            {% block alert_message %}
+            <div class="container message-queue">
+                <div class="row">
+                    <div class="small-12 columns">
+                        <div data-alert class="alert-box radius success">
+                          {{message}}
+                          <a href="#" class="close">&times;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        {% endif %}
+        {{ resetMessages() }}
+        <div class="container">
+            {% block content %}
+        </div>
+
+        {% endblock %}
+        <script>
+        {% block googleanalytics %}
+        {% endblock %}
+        </script>
+    </body>
+</html>

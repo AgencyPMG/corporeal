@@ -10,11 +10,16 @@ var cookieparser = require('cookie-parser');
 var csrf = require('csurf');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var troll = require('trollbridge');
+var _ = require('underscore');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
 
 
 var Setup = function(app) {
     this.app = app;
-    this.baseUrl = config.get('corporeal.admin.baseUrl', 'corporeal-admin');
+    this.baseUrl = config.get('corporeal.admin.baseUrl', '/corporeal-admin');
 }
 
 Setup.prototype.run = function() {
@@ -26,10 +31,13 @@ Setup.prototype.run = function() {
     this.setupStaticFiles();
     this.setupTemplatingScheme();
 
-    this.setupSession();
     this.setupBodyParser();
+    this.setupSession();
+    this.setupPassportSupport();
 
     this.setupCsrfProtection();
+
+    this.setupRoutes();
 
 
 }
@@ -45,17 +53,23 @@ Setup.prototype.setupStaticFiles = function() {
 Setup.prototype.setupTemplatingScheme = function() {
     var fileTemplateLoader = new nunjucks.FileSystemLoader(__dirname + '/views');
     var env = new nunjucks.Environment(fileTemplateLoader);
-
-    this.app.use(this.baseUrl, function(req, res, next) {
-        res.render = env.render;
-    });
-
-
     env.express(this.app);
 }
 
 Setup.prototype.setupSession = function() {
-    this.app.use(this.baseUrl, cookieparser(config.get('corporeal.sessionSecret', 'jg8vtg5JuYrK0VY')));
+    var secret = config.get('corporeal.sessionSecret', 'jg8vtg5JuYrK0VY');
+    this.app.use(this.baseUrl, cookieparser());
+  //   this.app.use(this.baseUrl, session({
+  //       store: new RedisStore({
+  //           host: config.get('corporeal.redis.host', '127.0.0.1'),
+  //           port: config.get('corporeal.redis.port', 6379),
+  //           db: 3,
+  //           pass: config.get('corporeal.redis.password')
+  //     }),
+  //     secret: secret
+  // }));
+  this.app.use(this.baseUrl, session({secret: secret}));
+
 }
 
 Setup.prototype.setupBodyParser = function() {
@@ -63,7 +77,8 @@ Setup.prototype.setupBodyParser = function() {
 }
 
 Setup.prototype.setupCsrfProtection = function() {
-    this.app.use(this.baseUrl, csrf());
+    var that = this;
+    //this.app.use(this.baseUrl, csrf()); we are disbaling for now, will add back in when it goes live
     this.app.use(this.baseUrl, function(req, res, next){
         if (!(typeof req.csrfToken === 'undefined')) {
             res.locals.csrf_token = req.csrfToken();
@@ -72,8 +87,9 @@ Setup.prototype.setupCsrfProtection = function() {
         res.locals.req = req;
         res.locals.error = req.session.error;
         res.locals.message = req.session.message;
-        //res.locals.has_permission = require('./app/lib/troll').layoutHasPermission(req);
-
+        res.locals.baseUrl = that.baseUrl;
+        res.locals.has_permission = troll.layoutHasPermission(req);
+        console.log('gpt here');
         res.locals.resetMessages = function() {
             req.session.error = null;
             req.session.message = null;
@@ -89,8 +105,8 @@ Setup.prototype.setupCsrfProtection = function() {
 
 Setup.prototype.setupPassportSupport = function() {
 
-    app.use(this.baseUrl, passport.initialize());
-    app.use(this.baseUrl, passport.session());
+    this.app.use(this.baseUrl, passport.initialize());
+    this.app.use(this.baseUrl, passport.session());
 
     passport.serializeUser(function(user, done) {
         done(null, user);
@@ -99,8 +115,12 @@ Setup.prototype.setupPassportSupport = function() {
     passport.deserializeUser(function(obj, done) {
         done(null, obj);
     });
+}
 
-
+Setup.prototype.setupRoutes = function() {
+    troll.setRedirectUrl(this.baseUrl + '/login');
+    troll.addStrategies(troll.PREMADESTRATEGIES.PASSPORT);
+    require('./routes/admin')(this.app);
 }
 
 module.exports = Setup;

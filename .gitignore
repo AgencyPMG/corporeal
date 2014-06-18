@@ -2,3 +2,6 @@
 
 app
 node_modules
+corporeal/public/components
+sass_cache*
+*.scssc

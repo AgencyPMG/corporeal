@@ -1,1 +1,1 @@
-module.exports = require('./lib/corporeal');
+module.exports = require('./corporeal');

@@ -1,0 +1,27 @@
+{
+  "name": "corporeal",
+  "main": "index.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/AgencyPMG/corporeal",
+  "authors": [
+    "Chris Alvares <mail@chrisalvares.com>"
+  ],
+  "description": "A lightweight CMS system for Node",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "zurb/bower-foundation",
+    "modernizr": "~2.8.2",
+    "requirejs": "~2.1.14",
+    "requirejs-text": "~2.0.12",
+    "requirejs-plugins": "~1.0.2",
+    "underscore": "~1.6.0",
+    "jquery": "~2.1.1"
+  }
+}
