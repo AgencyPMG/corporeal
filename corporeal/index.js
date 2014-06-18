@@ -2,7 +2,7 @@
  * The corporeal start
  */
 
-var config = require('simple-config');
+var config = require('super-config');
 var Setup = require('./setup');;
 
 var Corporeal = function() {
@@ -25,7 +25,7 @@ Corporeal.prototype.start = function(app) {
 
 /**
  * Gets the corporeal config file
- * @return {simple-config}
+ * @return {super-config}
  */
 Corporeal.prototype.getConfig = function() {
     return config;

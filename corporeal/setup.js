@@ -2,7 +2,7 @@
  * Sets up the corporeal environment class
  */
 
-var config = require('simple-config');
+var config = require('super-config');
 var express = require('express');
 var logger = require('morgan');
 var nunjucks = require('nunjucks');
