@@ -3,7 +3,7 @@
 {% block content %}
 <div class="reveal-modal small" data-reveal style="display:block;visibility:visible">
 <div class="reveal-modal-bg" style="display: none"></div>
-<form id="form" method="post" action="/corporeal/login/post" enctype="application/x-www-form-urlencoded">
+<form id="form" method="post" action="{{baseUrl}}/login/post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" id="_csrf" name="_csrf" value="{{csrf_token}}">
     <h2 class="modal-title">Login</h2>
     <div class="row">

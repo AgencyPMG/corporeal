@@ -12,7 +12,8 @@ module.exports = {
             dbname:'corporeal'
         },
         sessionSecret: 'jg8vtg5JuYrK0VY',
-        debug: true
+        debug: true,
+        whitelistedGoogleAppDomains: []
     },
     redis: {
         port: 6379,

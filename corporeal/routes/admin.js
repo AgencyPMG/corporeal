@@ -4,7 +4,10 @@ var _ = require('underscore');
 module.exports = function(app) {
     var baseUrl = config.get('corporeal.admin.baseUrl', '/corporeal-admin');
 
-    //app.get(baseUrl + '/dashboard', troll.shallNotPass('view_projects'), dashboard.home);
+    app.get(baseUrl + '/dashboard',
+        troll.shallNotPass('view_projects'),
+        require('../controllers/dashboard').home
+    );
 
 
     var login = require('../controllers/login');

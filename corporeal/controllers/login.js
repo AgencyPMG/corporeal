@@ -6,7 +6,7 @@
 var passport = require('passport');
 var GoogleStrategy = require('passport-google').Strategy;
 var _ = require('underscore');
-var config = require('simple-config');
+var config = require('super-config');
 var User = require('../models/user');
 
 var LoginController = function()
@@ -33,12 +33,12 @@ LoginController.prototype.loginWithPost = function(req, res) {
         }
         req.user = user;
         try { req.session.passport.user = user;} catch(e){console.log(e)};
-        res.redirect('/corporeal/dashboard');
+        res.redirect(res.locals.baseUrl + '/dashboard');
     });
 }
 
 LoginController.prototype.loginWithGoogle = function(req, res) {
-    this.useGoogleStrategy(req);
+    this.useGoogleStrategy(req, res);
     return passport.authenticate('google')(req, res);
 }
 
@@ -47,7 +47,7 @@ LoginController.prototype.loginWithUserCreds = function(req, res) {
 }
 
 LoginController.prototype.validateGoogle = function(req, res, next) {
-    this.useGoogleStrategy(req);
+    this.useGoogleStrategy(req, res);
     return passport.authenticate('google', { successRedirect: res.locals.baseUrl + '/dashboard',
                                     failureRedirect: res.locals.baseUrl+ '/login?error=bad_login' })(req, res, next);
 }
@@ -56,7 +56,7 @@ LoginController.prototype.validateGoogle = function(req, res, next) {
  * Starts a new Google Strategy
  * @since 0.0.1
  */
-LoginController.prototype.useGoogleStrategy = function(req)
+LoginController.prototype.useGoogleStrategy = function(req, res)
 {
     if (this.googleStrategy == null) {
         this.googleStrategy = new GoogleStrategy({
@@ -75,8 +75,9 @@ LoginController.prototype.useGoogleStrategy = function(req)
 LoginController.prototype.emailWasFound = function(identifer, profile, done) {
     //make sure it is a whitelisted domain
     var controller = this;
+    console.log('test',config.get('corporeal'));
     var email = _.find(profile.emails, function(email) {
-        if (controller.emailIsWhitelisted(email.value, config.get('whitelistedGoogleAppDomains'))) {
+        if (controller.emailIsWhitelisted(email.value, config.get('corporeal.whitelistedGoogleAppDomains'))) {
             return true;
         }
         return false;
