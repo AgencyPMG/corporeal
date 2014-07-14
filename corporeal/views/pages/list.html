@@ -21,6 +21,7 @@
             No Pages Available,
             you can create one <a href="{{baseUrl}}/pages/add">here</a>
         {% endif %}
+        <a href="{{baseUrl}}/pages/add" class="button right">Add Page</a>
         <ul class="pages">
             {% for page in pages %}
                 <li><a href="{{baseUrl}}/pages/edit/{{page.id}}">{{page.name}}</a></li>

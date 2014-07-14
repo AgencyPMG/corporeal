@@ -6,6 +6,7 @@ var Pages = require('../models/page');
 var _ = require('underscore');
 var config = require('super-config');
 var Templates = require('../models/template');
+var PageServe = require('./pageserve');
 
 var PagesController = function PagesController() {
 
@@ -107,6 +108,7 @@ PagesController.prototype.savePageEdit = function(req, res) {
         if(error) {
             req.session.error = error;
         }
+        PageServe.clearCache();
         req.session.message = 'Save Successful';
         res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
     });
@@ -147,6 +149,7 @@ PagesController.prototype.savePage = function(req, res) {
             res.redirect(res.locals.baseUrl + '/pages/add');
             return;
         }
+        PageServe.clearCache();
         res.redirect(res.locals.baseUrl + '/pages/edit/' + newPage.id);
     });
 }

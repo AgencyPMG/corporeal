@@ -11,6 +11,17 @@ var Templates = require('../models/template');
 
 var PageServe = function() {
     this.clearCache();
+    this.startPageServeTimer();
+}
+
+/**
+ * Clears the cache on a 5 minute basis
+ * @access private
+ */
+PageServe.prototype.startPageServeTimer = function() {
+    setInterval(_.bind(function() {
+        this.clearCache();
+    }, this), config.get('corporeal.cacheTimeout', 60000));
 }
 
 /**

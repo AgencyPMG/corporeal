@@ -14,7 +14,8 @@ module.exports = {
         sessionSecret: 'jg8vtg5JuYrK0VY',
         debug: true,
         templates: [],
-        whitelistedGoogleAppDomains: []
+        whitelistedGoogleAppDomains: [],
+        cacheTimeout: 60000
     },
     redis: {
         port: 6379,
