@@ -17,6 +17,14 @@ module.exports = function(app) {
         app.get(baseUrl + '/login/google/return', _.bind(login.validateGoogle, login));
         app.get(baseUrl + '/login/logout', _.bind(login.logout, login));
 
+    var pages = require('../controllers/pages');
+        app.get(baseUrl + '/pages/list', troll.shallNotPass('list_pages'), _.bind(pages.getAllPages, pages));
+        app.get(baseUrl + '/pages/add', troll.shallNotPass('add_pages'), _.bind(pages.addPage, pages));
+        app.post(baseUrl + '/pages/save', troll.shallNotPass('add_pages'), _.bind(pages.savePage, pages));
+        app.get(baseUrl + '/pages/edit/:pageid', troll.shallNotPass('edit_pages'), _.bind(pages.editPage, pages));
+        app.post(baseUrl + '/pages/edit/save', troll.shallNotPass('edit_pages'), _.bind(pages.savePageEdit, pages));
+
+    require('./pages')(app);
 
 
 }

@@ -33,7 +33,7 @@
                 <section class="top-bar-section">
                     <ul class="left">
                         {% for menuItem in navmenu.menuItems %}
-                            <li><a href="{{menuItem.href}}">{{menuItem.title}}</a></li>
+                            <li><a href="{{baseUrl}}{{menuItem.href}}">{{menuItem.title}}</a></li>
                         {% endfor %}
                     </ul>
                 </section>

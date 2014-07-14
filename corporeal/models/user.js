@@ -67,7 +67,6 @@ User.statics = {
     /*
      * The type of user, used to decide if it is
      * from a source like Google Auth or needs a username/password
-     * @since 0.0.1
      */
     USERTYPE: {
         INTERNAL: 1,
@@ -88,7 +87,6 @@ User.statics = {
     /*
      * This function is used when using Google Authentication
      * It will add a new user without a username/password
-     * @since 0.0.1
      */
     , forceLoginUser: function(email, password, name, done) {
         var userModal = this;
@@ -110,7 +108,6 @@ User.statics = {
 
     /*
      * Used to find a user by email address
-     * @since 0.0.1
      */
     , findByEmail: function(emailAddress, done) {
         this.findOne({email:emailAddress}, function(error, user) {
@@ -125,7 +122,6 @@ User.statics = {
     /*
      * Used to find a user by email address and password
      * You can use this function to validate a user
-     * @since 0.0.1
      */
     , findByEmailAndPassword: function(emailAddress, password, done) {
         var UserClass = this;
@@ -147,7 +143,6 @@ User.methods = {
     /*
      * Compares a password with another password
      * You can use this function to validate a user
-     * @since 0.0.1
      */
     comparePassword: function(candidatePassword, cb) {
         bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {

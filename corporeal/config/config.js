@@ -13,6 +13,7 @@ module.exports = {
         },
         sessionSecret: 'jg8vtg5JuYrK0VY',
         debug: true,
+        templates: [],
         whitelistedGoogleAppDomains: []
     },
     redis: {

@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="small-12 columns">
+        <h1> All Pages </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Search: <input type="text" class="search" name="searchBox" />
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="small-12 columns">
+        {% if 0 == pages.length %}
+            No Pages Available,
+            you can create one <a href="{{baseUrl}}/pages/add">here</a>
+        {% endif %}
+        <ul class="pages">
+            {% for page in pages %}
+                <li><a href="{{baseUrl}}/pages/edit/{{page.id}}">{{page.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

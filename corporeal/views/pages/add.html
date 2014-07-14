@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form method="post" enctype="application/x-www-form-urlencoded" action="{{baseUrl}}/pages/save">
+<input type="hidden" value="{{csrf_token}}" name="_csrf" />
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Add New Page</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Name: <input type="text" name="name" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Template:
+        <select name="template">
+            {% for template in templates %}
+                <option value="{{template.id}}">{{template.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-3 medium-3 columns" style="margin-top:10px">
+        {{templateBaseUrl}}
+    </div>
+    <div class="small-10 medium-5 large-3 columns end">
+        <input type="text" name="url" style="margin-left: -80px;width: 170px;" placeholder="/" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Tags: <input type="text" name="tags" />
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        <input type="submit" class="button right" value="Save">
+    </div>
+</div>
+
+
+{% endblock %}

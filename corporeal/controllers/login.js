@@ -54,7 +54,6 @@ LoginController.prototype.validateGoogle = function(req, res, next) {
 
 /*
  * Starts a new Google Strategy
- * @since 0.0.1
  */
 LoginController.prototype.useGoogleStrategy = function(req, res)
 {
@@ -70,7 +69,6 @@ LoginController.prototype.useGoogleStrategy = function(req, res)
 
 /*
  * Used for a google strategy to confirm and email address
- * @since 0.0.1
  */
 LoginController.prototype.emailWasFound = function(identifer, profile, done) {
     //make sure it is a whitelisted domain

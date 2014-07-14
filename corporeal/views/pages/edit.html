@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+{% block stylesheets %}
+<style type="text/css">
+.htmleditor {
+    width: 100%;
+    height: 400px;
+    border: 1px solid #eee;
+}
+
+input, select, textarea, .htmleditor {
+    margin-top: 10px !important;
+}
+
+#jquery-notebook-content-1 {
+    display:none;
+}
+
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+require(['jquery', 'epiceditor'], function($) {
+    $(document).ready(function() {
+        var editor = new EpicEditor({theme: {
+            base: '/../../../../components/epiceditor/themes/base/epiceditor.css',
+            preview: '/../../../../components/epiceditor/themes/preview/preview-dark.css',
+            editor: '/../../../../components/epiceditor/themes/editor/epic-dark.css'
+        }}).load();
+    });
+})
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="application/x-www-form-urlencoded" action="{{baseUrl}}/pages/edit/save">
+<input type="hidden" value="{{csrf_token}}" name="_csrf" />
+<input type="hidden" value="{{page.id}}" name="pageid" />
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Edit Page</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Name: <input type="text" name="name" value="{{page.name}}" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Template:
+        <select name="template">
+            {% for template in templates %}
+                <option value="{{template.id}}" {% if page.template == template.id %} selected="true" {% endif %}>{{template.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-3 medium-3 columns" style="margin-top:20px">
+        {{templateBaseUrl}}/
+    </div>
+    <div class="small-10 medium-5 large-3 columns end">
+        <input type="text" name="url" style="margin-left: -80px;width: 170px;" placeholder="/" value="{{page.url}}" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        Tags: <input type="text" name="tags" value="{{page.tags|join(',')}}" />
+    </div>
+</div>
+
+
+<div class="row configuration">
+    <div class="small-12 medium-6 large-4 columns">
+        {% for key, option in templateOptions.variables %}
+            <div class="row">
+                <div class="small-12 columns">
+                    {{key}}:
+                    {% if option.type == 'file' %}
+                        <input type="file" name="variable.{{key}}" value="{{pageOptions[key]}}" />
+                    {% elif option.type == 'html' %}
+                        <textarea name="variable.{{key}}">{{pageOptions[key]}}</textarea>
+                    {% else %}
+                        <input type="text" name="variable.{{key}}" value="{{pageOptions[key]}}" />
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+<div>
+
+
+<div class="row">
+    <div class="small-12 medium-6 large-4 columns">
+        <input type="submit" class="button right" value="Save">
+    </div>
+</div>
+
+
+{% endblock %}
