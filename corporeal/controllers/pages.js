@@ -5,6 +5,7 @@
 var Pages = require('../models/page');
 var _ = require('underscore');
 var config = require('super-config');
+var Templates = require('../models/template');
 
 var PagesController = function PagesController() {
 
@@ -60,29 +61,15 @@ PagesController.prototype.editPage = function(req, res) {
             res.redirect(res.locals.baseUrl + '/pages/list');
             return;
         }
+
         res.render('pages/edit.html', {
             templates: this.getAllTemplates(),
             templateBaseUrl: this.getTemplateBaseUrl(req),
             page: page,
             pageOptions: page.get('templateData'),
-            templateOptions: this.getTemplateOptions(page.template)
+            templateOptions: Templates.getTemplateForPage(page)
         });
     }, this));
-}
-
-/**
- * Gets the template options from the template
- * @access protected
- * @param templateName the name of the template
- */
-PagesController.prototype.getTemplateOptions = function(templateName) {
-    try {
-        var temp = require('../views/templates/' + templateName + '/template');
-    } catch(e) {
-        console.log('could not load template');
-        return {};
-    }
-    return temp;
 }
 
 /**

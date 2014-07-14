@@ -6,12 +6,11 @@ var util = require('util');
 var _ = require('underscore');
 var URL = require('url');
 var Pages = require('../models/page');
+var Templates = require('../models/template');
 
 
 var PageServe = function() {
     this.clearCache();
-    this.templates = {};
-    this.loadTemplates();
 }
 
 /**
@@ -85,7 +84,7 @@ PageServe.prototype.findPageToServe = function(req, res) {
 PageServe.prototype.servePage = function(req, res, page) {
     //serve some mother fucking pages!
 
-    var template = this.getTemplateForPage(page);
+    var template = Templates.getTemplateForPage(page);
     if(!template) {
         console.log('Page template was not found for url: ' + req.url);
         res.send(404);
@@ -101,19 +100,6 @@ PageServe.prototype.servePage = function(req, res, page) {
     }
 }
 
-PageServe.prototype.loadTemplates = function() {
-    var templates = config.get('corporeal.templates');
-    this.templates = {};
-
-    for(var index in templates) {
-        this.templates[templates[index].id] = templates[index];
-
-    }
-}
-
-PageServe.prototype.getTemplateForPage = function(page) {
-    return this.templates[page.template];
-}
 
 PageServe.prototype.render = function() {
 

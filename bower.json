@@ -22,6 +22,7 @@
     "requirejs-text": "~2.0.12",
     "requirejs-plugins": "~1.0.2",
     "underscore": "~1.6.0",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "tinymce": "~4.1.1"
   }
 }

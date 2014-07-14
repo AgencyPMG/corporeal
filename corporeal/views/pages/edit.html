@@ -22,13 +22,9 @@ input, select, textarea, .htmleditor {
 
 {% block scripts %}
 <script type="text/javascript">
-require(['jquery', 'epiceditor'], function($) {
+require(['jquery', 'tinymce'], function($) {
     $(document).ready(function() {
-        var editor = new EpicEditor({theme: {
-            base: '/../../../../components/epiceditor/themes/base/epiceditor.css',
-            preview: '/../../../../components/epiceditor/themes/preview/preview-dark.css',
-            editor: '/../../../../components/epiceditor/themes/editor/epic-dark.css'
-        }}).load();
+        tinymce.init({selector:'.html-editor'});
     });
 })
 
@@ -80,7 +76,7 @@ require(['jquery', 'epiceditor'], function($) {
 
 
 <div class="row configuration">
-    <div class="small-12 medium-6 large-4 columns">
+    <div class="small-12 medium-6 large-6 columns">
         {% for key, option in templateOptions.variables %}
             <div class="row">
                 <div class="small-12 columns">
@@ -88,7 +84,7 @@ require(['jquery', 'epiceditor'], function($) {
                     {% if option.type == 'file' %}
                         <input type="file" name="variable.{{key}}" value="{{pageOptions[key]}}" />
                     {% elif option.type == 'html' %}
-                        <textarea name="variable.{{key}}">{{pageOptions[key]}}</textarea>
+                        <textarea name="variable.{{key}}" class="html-editor">{{pageOptions[key]}}</textarea>
                     {% else %}
                         <input type="text" name="variable.{{key}}" value="{{pageOptions[key]}}" />
                     {% endif %}
@@ -101,8 +97,8 @@ require(['jquery', 'epiceditor'], function($) {
 
 
 <div class="row">
-    <div class="small-12 medium-6 large-4 columns">
-        <input type="submit" class="button right" value="Save">
+    <div class="small-12 medium-6 large-6 columns">
+        <input type="submit" class="button" value="Save">
     </div>
 </div>
 
