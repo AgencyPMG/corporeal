@@ -16,6 +16,7 @@ var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var NavMenu = require('./routes/navmenu');
 var path = require('path');
+var multer  = require('multer')
 
 var Setup = function(app) {
     this.app = app;
@@ -30,6 +31,8 @@ Setup.prototype.run = function() {
     if(config.get('corporeal.debug', false)) {
         this.setupDebugInformation();
     }
+
+    this.app.use(require('cors')());
 
     this.setupStaticFiles();
     this.setupTemplatingScheme();
@@ -68,6 +71,7 @@ Setup.prototype.setupStaticFiles = function() {
                     templateBaseUrl + '/' + templates[index].id,
                     express.static(staticFiles)
                 );
+                console.log(templateBaseUrl + '/' + templates[index].id);
             }
         } catch(e) {
             console.log('Corporeal: Template static files could not be loaded: ', e);
@@ -124,6 +128,7 @@ Setup.prototype.setupSession = function() {
  */
 Setup.prototype.setupBodyParser = function() {
     this.app.use(this.baseUrl, bodyParser());
+    this.app.use(this.baseUrl, multer({ dest: __dirname + '/public/uploads/'}));
 }
 
 /**
