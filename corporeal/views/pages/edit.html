@@ -33,23 +33,23 @@ require(['jquery', 'tinymce'], function($) {
 {% endblock %}
 
 {% block content %}
-<form method="post" enctype="application/x-www-form-urlencoded" action="{{baseUrl}}/pages/edit/save">
+<form method="post"  enctype="multipart/form-data" action="{{baseUrl}}/pages/edit/save">
 <input type="hidden" value="{{csrf_token}}" name="_csrf" />
 <input type="hidden" value="{{page.id}}" name="pageid" />
 <div class="row">
-    <div class="small-12 columns">
+    <div class="small-12 columns" style="margin-top:20px">
         <h1>Edit Page</h1>
     </div>
 </div>
 
 <div class="row">
-    <div class="small-12 medium-6 large-4 columns">
+    <div class="small-12 columns">
         Name: <input type="text" name="name" value="{{page.name}}" />
     </div>
 </div>
 
 <div class="row">
-    <div class="small-12 medium-6 large-4 columns">
+    <div class="small-12 columns">
         Template:
         <select name="template">
             {% for template in templates %}
@@ -60,31 +60,40 @@ require(['jquery', 'tinymce'], function($) {
 </div>
 
 <div class="row">
-    <div class="small-3 medium-3 columns" style="margin-top:20px">
-        {{templateBaseUrl}}/
-    </div>
-    <div class="small-10 medium-5 large-3 columns end">
-        <input type="text" name="url" style="margin-left: -80px;width: 170px;" placeholder="/" value="{{page.url}}" />
+    <div class="small-12 columns" style="margin-top:20px">
+        <span id="url-base">{{templateBaseUrl}}/</span>
+        <span>
+            <input id="url-ext" type="text" name="url"placeholder="/" value="{{page.url}}" style="display:inline-block; width: 100px"/>
+        </span>
+        <a id="preview" target="_blank">Go to URL</a>
     </div>
 </div>
 
 <div class="row">
-    <div class="small-12 medium-6 large-4 columns">
+    <div class="small-12 columns">
         Tags: <input type="text" name="tags" value="{{page.tags|join(',')}}" />
     </div>
 </div>
 
 
 <div class="row configuration">
-    <div class="small-12 medium-6 large-6 columns">
+    <div class="small-12 columns">
         {% for key, option in templateOptions.variables %}
             <div class="row">
                 <div class="small-12 columns">
                     {{key}}:
                     {% if option.type == 'file' %}
-                        <input type="file" name="variable.{{key}}" value="{{pageOptions[key]}}" />
+                        <input type="file" name="variable.{{key}}-upload"  /> <Br />
+                        <input type="text" name="variable.{{key}}" value="{{pageOptions[key]}}" />
+                    {% elif option.type == 'option' %}
+                        <select name="variable.{{key}}">
+                            {% for optionKey,optionValue in option.options %}
+                                <option value="{{optionKey}}" {% if optionKey == pageOptions[key] %}selected="true"{%endif%}>{{optionValue}}</option>
+                            {% endfor %}
+                        </select>
                     {% elif option.type == 'html' %}
                         <textarea name="variable.{{key}}" class="html-editor">{{pageOptions[key]}}</textarea>
+                        <BR /><BR />
                     {% else %}
                         <input type="text" name="variable.{{key}}" value="{{pageOptions[key]}}" />
                     {% endif %}
@@ -97,10 +106,20 @@ require(['jquery', 'tinymce'], function($) {
 
 
 <div class="row">
-    <div class="small-12 medium-6 large-6 columns">
+    <div class="small-12 columns">
         <input type="submit" class="button" value="Save">
     </div>
 </div>
+
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#preview').attr('href', $('#url-base').html() + $('#url-ext').val());
+        $('#url-ext').on('keydown', function() {
+            $('#preview').attr('href', $('#url-base').html() + $('#url-ext').val());
+        });
+    });
+</script>
 
 
 {% endblock %}

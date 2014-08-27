@@ -73,6 +73,7 @@ PageServe.prototype.findPageToServe = function(req, res) {
 
     var newUrl = pathname.replace(baseTemplateUrl + '/', '');
 
+
     Pages.findOne(
         {url: newUrl},
         _.bind(function(error, page) {
@@ -80,7 +81,7 @@ PageServe.prototype.findPageToServe = function(req, res) {
                 res.send(404);
                 return;
             }
-            this.cachedRoutes[pathname] = page;
+            //this.cachedRoutes[pathname] = page;
             this.servePage(req, res, page);
     }, this));
 }
@@ -102,6 +103,9 @@ PageServe.prototype.servePage = function(req, res, page) {
         return;
     }
 
+    res.locals.staticFileDir = config.get('corporeal.template.baseUrl') + '/' + template.id;
+
+
     if ('function' === typeof template.configuration) {
         template.configuration(req, res, page, function() {
             res.render(template.dirId + '/' + template.files.startPage, page.get('templateData'));
@@ -109,11 +113,6 @@ PageServe.prototype.servePage = function(req, res, page) {
     } else {
         res.render(template.dirId + '/' + template.files.startPage, page.get('templateData'));
     }
-}
-
-
-PageServe.prototype.render = function() {
-
 }
 
 /**

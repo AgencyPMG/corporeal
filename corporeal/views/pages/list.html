@@ -9,8 +9,9 @@
 </div>
 
 <div class="row">
-    <div class="small-12 medium-6 large-4 columns">
-        Search: <input type="text" class="search" name="searchBox" />
+    <div class="small-12 columns ">
+        <input type="text" class="search" name="searchBox" / style="display:inline-block;width:calc(100% - 150px);">
+        <button>Search</button>
     </div>
 </div>
 
@@ -21,12 +22,12 @@
             No Pages Available,
             you can create one <a href="{{baseUrl}}/pages/add">here</a>
         {% endif %}
-        <a href="{{baseUrl}}/pages/add" class="button right">Add Page</a>
         <ul class="pages">
             {% for page in pages %}
                 <li><a href="{{baseUrl}}/pages/edit/{{page.id}}">{{page.name}}</a></li>
             {% endfor %}
         </ul>
+        <a href="{{baseUrl}}/pages/add" class="button">Add Page</a>
     </div>
 </div>
 
