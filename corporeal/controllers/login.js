@@ -30,6 +30,7 @@ LoginController.prototype.loginWithPost = function(req, res) {
         if (error) {
             req.session.error = error;
             res.redirect(res.locals.baseUrl + '/login');
+            return;
         }
         req.user = user;
         try { req.session.passport.user = user;} catch(e){console.log(e)};
