@@ -6,6 +6,7 @@ The best CMS on the planet, a perfect compliment to GhostJS.
 
 ### New Projects
 ```
+#NOTE: This is currently not working just yet
 npm install -g yo
 npm install corporeal corporeal-generator
 yo generate corporeal-project
@@ -14,7 +15,7 @@ yo generate corporeal-project
 
 ### Existing Express Projects
 ```
-npm install corporeal
+npm install corporeal --save
 ```
 
 Inside your express app
