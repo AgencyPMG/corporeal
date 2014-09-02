@@ -108,6 +108,9 @@ require(['jquery', 'tinymce'], function($) {
 <div class="row">
     <div class="small-12 columns">
         <input type="submit" class="button" value="Save">
+        {% if has_permission('page_delete') %}
+            <a href="{{baseUrl}}/pages/delete/{{page.id}}" class="button alert right">Delete</a>
+        {% endif %}
     </div>
 </div>
 

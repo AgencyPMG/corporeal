@@ -27,7 +27,9 @@
                 <li><a href="{{baseUrl}}/pages/edit/{{page.id}}">{{page.name}}</a></li>
             {% endfor %}
         </ul>
-        <a href="{{baseUrl}}/pages/add" class="button">Add Page</a>
+        {% if has_permission('add_pages') %}
+            <a href="{{baseUrl}}/pages/add" class="button">Add Page</a>
+        {% endif %}
     </div>
 </div>
 

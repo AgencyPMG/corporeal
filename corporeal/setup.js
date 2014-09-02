@@ -32,8 +32,6 @@ Setup.prototype.run = function() {
         this.setupDebugInformation();
     }
 
-    this.app.use(require('cors')());
-
     this.setupStaticFiles();
     this.setupTemplatingScheme();
 
@@ -182,7 +180,10 @@ Setup.prototype.setupPassportSupport = function() {
  */
 Setup.prototype.setupRoutes = function() {
     troll.setRedirectUrl(this.baseUrl + '/login');
-    troll.addStrategies(troll.PREMADESTRATEGIES.PASSPORT);
+    troll.addStrategies([
+        troll.PREMADESTRATEGIES.PASSPORT,
+        require('./troll/strategies/permissions')
+    ]);
     require('./routes')(this.app);
 }
 

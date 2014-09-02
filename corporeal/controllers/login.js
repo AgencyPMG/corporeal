@@ -22,11 +22,14 @@ LoginController.prototype.login = function(req, res)
 LoginController.prototype.logout = function(req, res)
 {
     req.logout();
-    res.redirect('/login');
+    res.redirect(res.locals.baseUrl + '/login');
 }
 
 LoginController.prototype.loginWithPost = function(req, res) {
-    User.findByEmailAndPassword(req.param('username', ''), req.param('password', '****'), function(error, user) {
+    User.findByEmailAndPassword(
+        req.param('username', ''),
+        req.param('password', '****'), function(error, user) {
+
         if (error) {
             req.session.error = error;
             res.redirect(res.locals.baseUrl + '/login');
