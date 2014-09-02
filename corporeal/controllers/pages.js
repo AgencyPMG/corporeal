@@ -85,7 +85,9 @@ PagesController.prototype.savePageEdit = function(req, res) {
     var name = req.param('name', '');
     var template = req.param('template', '');
     var tags = req.param('tags', '');
-    if(!name || !template) {
+    var url = req.param('url', '');
+
+    if(!name || !template || !url) {
         req.session.error = 'Please fill out all parameters';
         res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
         return;
@@ -109,6 +111,7 @@ PagesController.prototype.savePageEdit = function(req, res) {
     Pages.update({_id: pageid}, {
         name: name,
         template: template,
+        url: url,
         tags: tags,
         templateData: JSON.stringify(options)
     }, function(error) {
@@ -120,6 +123,31 @@ PagesController.prototype.savePageEdit = function(req, res) {
         res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
     });
 }
+
+PagesController.prototype.deletePage = function(req, res) {
+    //deletes a page
+    var pageid = req.param('pageid');
+    Pages.findOne({_id: pageid}, function(error, page) {
+        if (error) {
+            req.session.error = error;
+            res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
+            return;
+        }
+        page.remove(function(error) {
+            if (error) {
+                req.session.error = error;
+                res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
+                return;
+            }
+            req.session.message = 'Page Deleted Successfully';
+            res.redirect(res.locals.baseUrl + '/pages/list');
+            return;
+        })
+    })
+
+
+}
+
 
 /**
  * Save page from an add form
@@ -160,6 +188,7 @@ PagesController.prototype.savePage = function(req, res) {
         res.redirect(res.locals.baseUrl + '/pages/edit/' + newPage.id);
     });
 }
+
 
 /**
  * Helper method to get all the templates

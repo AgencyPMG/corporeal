@@ -2,7 +2,7 @@
  * User Model
  */
 
-var mongoose = require('mongoose');
+var mongoose = require('super-config').get('db');
 var bcrypt = require('bcrypt');
 
 var User = new mongoose.Schema({

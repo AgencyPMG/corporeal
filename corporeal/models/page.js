@@ -1,8 +1,7 @@
 /*
  * Page Model
  */
-
-var mongoose = require('mongoose');
+var mongoose = require('super-config').get('db');
 
 var Page = new mongoose.Schema({
     url: {

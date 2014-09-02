@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="small-12 columns">
+        <h2>{% if editableUser %} Edit {% else %} Add {% endif %} User</h2>
+    </div>
+</div>
+
+{% if editableUser %}
+<form method="post" enctype="application/x-www-form-urlencoded" action="{{baseUrl}}/user/{{editableUser.id}}/edit">
+<input type="hidden" name="userId" value="{{editableUser._id}}">
+{% else %}
+<form method="post" enctype="application/x-www-form-urlencoded" action="{{baseUrl}}/user/add/post?type=add">
+{% endif %}
+<input type="hidden" name="_csrf" value="{{csrf_token}}" />
+<div class="row">
+    <div class="small-12 project_{{type}} columns">
+        <div class="control-group">
+            <label class="control-label required" for="email">Email</label>
+            <div class="controls">
+                <input type="text" name="email" required="required" value="{{editableUser.email}}" />
+            </div>
+        </div>
+        <BR />
+        <div class="control-group">
+            <label class="control-label required" for="email">Name</label>
+            <div class="controls">
+                <input type="text" name="name" required="required" value="{{editableUser.name}}" />
+            </div>
+        </div>
+        <BR />
+        {% if userroles and has_permission('edit_user_permissions') %}
+        <div class="control-group">
+            <label class="control-label required" for="userrole">User Role</label>
+            <div class="controls">
+                <select name="userrole">
+                    {% for name,id in userroles %}
+                        <option value="{{id}}" {% if editableUser.userrole == id %}selected="true"{% endif %}>{{name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <BR />
+        {% endif %}
+        <div class="control-group">
+            <label class="control-label required" for="email">Password</label>
+            <div class="controls">
+                <input type="password" name="password1" value="" />
+            </div>
+        </div>
+        <BR />
+        <div class="control-group">
+            <label class="control-label required" for="email">Confirm Password</label>
+            <div class="controls">
+                <input type="password" name="password2" value="" />
+            </div>
+        </div>
+        <BR />
+        <div class="control-group">
+            <div class="controls">
+                {% if currUser == null %}
+                    <input type="hidden" name="userId" value="{{req.user._id}}">
+                {% else %}
+                    <input type="hidden" name="userId" value="{{currUser._id}}">
+                {% endif %}
+                <input type="submit" value="Save" class="button right">
+            </div>
+        </div>
+        <BR />
+        <div class="control-group">
+            {% if projects %}
+            <h3>Clients</h3>
+            <div class="control-group">
+                <div class="controls">
+                    {% for project in projects %}
+                        <label class="control-label" for="projects-{{project.id}}">
+                            <input type="checkbox" name="projects-{{project.id}}" value="{{project.id}}" {% if hasProject(project.id, editableUser.projects) %}checked="checked"{% endif %} />
+                            {{project.name}}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+</form>
+
+{% endblock %}
