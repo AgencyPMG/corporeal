@@ -38,7 +38,12 @@ require(['jquery', 'tinymce'], function($) {
 <input type="hidden" value="{{page.id}}" name="pageid" />
 <div class="row">
     <div class="small-12 columns" style="margin-top:20px">
-        <h1>Edit Page</h1>
+        <h1>
+            Edit Page
+            {% if has_permission('page_delete') %}
+                <a href="{{baseUrl}}/pages/delete/{{page.id}}" class="button alert right">Delete Page</a>
+            {% endif %}
+        </h1>
     </div>
 </div>
 
@@ -107,10 +112,7 @@ require(['jquery', 'tinymce'], function($) {
 
 <div class="row">
     <div class="small-12 columns">
-        <input type="submit" class="button" value="Save">
-        {% if has_permission('page_delete') %}
-            <a href="{{baseUrl}}/pages/delete/{{page.id}}" class="button alert right">Delete</a>
-        {% endif %}
+        <input type="submit" class="button right" value="Save">
     </div>
 </div>
 
