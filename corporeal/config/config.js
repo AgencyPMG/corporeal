@@ -11,6 +11,11 @@ module.exports = {
             port:'27017',
             dbname:'corporeal'
         },
+        uploads: {
+            dir: __dirname + '/public/uploads/',
+            cdnhost: '',
+            baseUrl: '/uploads'
+        },
         sessionSecret: 'jg8vtg5JuYrK0VY',
         debug: true,
         templates: [],

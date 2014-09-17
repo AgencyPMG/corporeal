@@ -58,6 +58,7 @@ Setup.prototype.setupDebugInformation = function() {
  */
 Setup.prototype.setupStaticFiles = function() {
     this.app.use(this.baseUrl, express.static(__dirname + '/public'));
+    this.app.use(config.get('corporeal.uploads.baseUrl'), express.static(config.get('corporeal.uploads.dir')));
     var templateBaseUrl = config.get('corporeal.template.baseUrl');
 
     var templates = config.get('corporeal.templates', []);
@@ -126,7 +127,7 @@ Setup.prototype.setupSession = function() {
  */
 Setup.prototype.setupBodyParser = function() {
     this.app.use(this.baseUrl, bodyParser());
-    this.app.use(this.baseUrl, multer({ dest: __dirname + '/public/uploads/'}));
+    this.app.use(this.baseUrl, multer({ dest: config.get('corporeal.uploads.dir')}));
 }
 
 /**

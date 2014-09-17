@@ -104,7 +104,7 @@ PagesController.prototype.savePageEdit = function(req, res) {
     for(var key in req.files) {
         if(-1 !== key.indexOf('variable.')) {
             var actualKey = key.replace(/variable\./g, '').replace(/\-upload/gi, '');
-            options[actualKey] = config.get('corporeal.imageCDN') + config.get('corporeal.admin.baseUrl') + '/uploads/' + req.files[key].name;
+            options[actualKey] = config.get('corporeal.uploads.cdnhost') + config.get('corporeal.uploads.baseUrl') + '/' + req.files[key].name;
         }
     }
 
@@ -117,6 +117,8 @@ PagesController.prototype.savePageEdit = function(req, res) {
     }, function(error) {
         if(error) {
             req.session.error = error;
+            res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
+            return;
         }
         PageServe.clearCache();
         req.session.message = 'Save Successful';

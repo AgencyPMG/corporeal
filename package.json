@@ -1,6 +1,6 @@
 {
   "name": "corporeal",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A CMS made for front end designers and developers, used for single page sites that need minimal database integrations",
   "main": "index.js",
   "scripts": {
