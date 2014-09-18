@@ -49,6 +49,22 @@ PagesController.prototype.addPage = function(req, res) {
 }
 
 /**
+ * Render a Bulk Upload Template
+ * @access public
+ * @param req {Request}
+ * @param res {Response}
+ */
+ PagesController.prototype.bulkUpload = function(req, res) {
+    //get the templates
+    res.render('pages/bulkupload.html', {
+        templates: this.getAllTemplates(),
+        templateBaseUrl: this.getTemplateBaseUrl(req),
+        page: {},
+        type: 'add'
+    });
+ }
+
+/**
  * Renders an edit page template with a page
  * @access public
  * @param req {Request}

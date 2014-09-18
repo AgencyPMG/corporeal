@@ -42,7 +42,8 @@
     "passport-google": "^0.3.0",
     "super-config": "^0.0.4",
     "trollbridge": "^0.1.0",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "ya-csv": "^0.9.4"
   },
   "devDependencies": {
     "mocha": "^1.19.0"
