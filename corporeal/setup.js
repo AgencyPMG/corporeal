@@ -58,14 +58,14 @@ Setup.prototype.setupDebugInformation = function() {
  */
 Setup.prototype.setupStaticFiles = function() {
     this.app.use(this.baseUrl, express.static(__dirname + '/public'));
-    this.app.use(config.get('corporeal.uploads.baseUrl'), express.static(config.get('corporeal.uploads.dir')));
+    this.app.use(config.get('corporeal.uploads.baseUrl'), express.static(config.get('corporeal.uploads.dir', __dirname + '/uploads')));
     var templateBaseUrl = config.get('corporeal.template.baseUrl');
 
     var templates = config.get('corporeal.templates', []);
     for(var index in templates) {
         try {
             var staticFiles = templates[index].files.staticFiles;
-            if (typeof staticFiles !== 'undefined') {
+            if (!staticFiles) {
                 this.app.use(
                     templateBaseUrl + '/' + templates[index].id,
                     express.static(staticFiles)
@@ -127,7 +127,7 @@ Setup.prototype.setupSession = function() {
  */
 Setup.prototype.setupBodyParser = function() {
     this.app.use(this.baseUrl, bodyParser());
-    this.app.use(this.baseUrl, multer({ dest: config.get('corporeal.uploads.dir')}));
+    this.app.use(this.baseUrl, multer({ dest: config.get('corporeal.uploads.dir', __dirname + '/uploads')}));
 }
 
 /**
