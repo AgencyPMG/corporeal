@@ -19,8 +19,10 @@
 <div class="row">
     <div class="small-12 columns">
         {% if 0 == pages.length %}
-            No Pages Available,
-            you can create one <a href="{{baseUrl}}/pages/add">here</a>
+            No Pages Available
+            {% if has_permission('add_pages') %}
+            , you can create one <a href="{{baseUrl}}/pages/add">here</a>
+            {% endif %}
         {% endif %}
         <ul class="pages">
             {% for page in pages %}
@@ -29,6 +31,7 @@
         </ul>
         {% if has_permission('add_pages') %}
             <a href="{{baseUrl}}/pages/add" class="button">Add Page</a>
+            <a href="{{baseUrl}}/pages/bulkadd" class="button">Bulk Upload</a>
         {% endif %}
     </div>
 </div>
