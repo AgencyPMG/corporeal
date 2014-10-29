@@ -9,7 +9,6 @@ var PageServeController = require('../controllers/pageserve');
 var BulkUploadController = require('../controllers/pages-bulkupload');
 
 module.exports = function(app, baseUrl) {
-
     //this is where we setup all the pages
     var pages = new PagesController();
         app.get(baseUrl + '/pages/list', troll.shallNotPass('list_pages'), _.bind(pages.getAllPages, pages));
