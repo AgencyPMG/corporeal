@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block stylesheets %}
+<!--    <link rel="stylesheet" href="add_styles.css">-->
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="application/x-www-form-urlencoded" action="{{baseUrl}}/pages/save">
+<input type="hidden" value="{{csrf_token}}" name="_csrf" />
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Bulk Upload Pages</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        Template:
+        <select name="template">
+            {% for template in templates %}
+                <option value="{{template.id}}">{{template.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+        <span class="url-title" style="display: block">Upload File</span>
+        <span>
+            <input type="file">
+        </span>
+    </div>
+    <div class="small-10 medium-5 large-3 columns end">
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+        <input type="submit" class="button right" value="Upload">
+    </div>
+</div>
+
+
+{% endblock %}
