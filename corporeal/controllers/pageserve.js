@@ -127,4 +127,4 @@ PageServe.prototype.stripTrailingSlashFromUrl = function(str) {
     return str;
 }
 
-module.exports = new PageServe();
+module.exports = PageServe;

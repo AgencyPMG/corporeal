@@ -208,4 +208,4 @@ PagesController.prototype.getTemplateBaseUrl = function(req) {
     return req.protocol + "://" + req.get('host') + config.get('corporeal.template.baseUrl');
 }
 
-module.exports = new PagesController();
+module.exports = PagesController;

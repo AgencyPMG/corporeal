@@ -107,4 +107,4 @@ LoginController.prototype.emailIsWhitelisted = function(email, domainList)
 }
 
 
-module.exports = new LoginController();
+module.exports = LoginController;
