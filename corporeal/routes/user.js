@@ -1,11 +1,9 @@
 var troll = require('trollbridge');
 var _ = require('underscore');
-var config = require('super-config');
+var UserController = require('../controllers/user');
+module.exports = function(app, baseUrl) {
 
-module.exports = function(app) {
-
-    var baseUrl = config.get('corporeal.admin.baseUrl', '/corporeal-admin');
-    var user = require('../controllers/user');
+    var user = new UserController();
 
     var canEditUser = function(req, res, next) {
         if(req.param('userid') == req.user._id) {
