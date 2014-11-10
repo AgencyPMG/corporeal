@@ -1,5 +1,8 @@
 module.exports = {
     corporeal: {
+        whitelabel: {
+            name: 'Corporeal'
+        },
         admin: {
             baseUrl: '/corporeal-admin',
         },
