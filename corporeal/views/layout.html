@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Corporeal</title>
+        <title>{% block title %} {{whitelabel_name}} {% endblock %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -26,7 +26,7 @@
                 <ul class="title-area">
                     <li class="name">
                         <h1>
-                            <a href="{{baseUrl}}/dashboard" title="Datawarehouse">Corporeal</a>
+                            <a href="{{baseUrl}}/dashboard" title="Datawarehouse">{{whitelabel_name}}</a>
                         </h1>
                     </li>
                 </ul>
