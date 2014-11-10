@@ -20,6 +20,7 @@ module.exports = function(app, baseUrl) {
 
     var bulkupload = new BulkUploadController();
         app.get(baseUrl + '/pages/bulkadd', troll.shallNotPass('add_pages'), _.bind(bulkupload.configure, bulkupload));
+        app.post(baseUrl + '/pages/bulksave', troll.shallNotPass('add_pages'), _.bind(bulkupload.upload, bulkupload));
 
 
     var pageserve = new PageServeController();

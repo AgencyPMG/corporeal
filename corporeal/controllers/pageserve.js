@@ -7,6 +7,8 @@ var _ = require('underscore');
 var URL = require('url');
 var Pages = require('../models/page');
 var Templates = require('../models/template');
+var nunjucks = require('nunjucks');
+var fs = require('fs');
 
 
 var PageServe = function() {
@@ -105,7 +107,6 @@ PageServe.prototype.servePage = function(req, res, page) {
 
     res.locals.staticFileDir = config.get('corporeal.template.baseUrl') + '/' + template.id;
 
-
     if ('function' === typeof template.configuration) {
         template.configuration(req, res, page, function() {
             res.render(template.dirId + '/' + template.files.startPage, page.get('templateData'));
@@ -113,6 +114,26 @@ PageServe.prototype.servePage = function(req, res, page) {
     } else {
         res.render(template.dirId + '/' + template.files.startPage, page.get('templateData'));
     }
+}
+
+PageServe.prototype.renderPageToString = function(page) {
+    var template = Templates.getTemplateForPage(page);
+    if (!template) {
+        return null;
+    }
+
+    var params = {
+        staticFileDir: config.get('corporeal.template.baseUrl') + '/' + template.id
+    };
+    params = _.extend(params, page.get('templateData'));
+    var template = fs.readFileSync(
+        template.files.baseTemplateDirectory + '/' + template.files.startPage,
+        {encoding: 'utf8'}
+    );
+    return nunjucks.renderString(
+        template,
+        page.get('templateData')
+    );
 }
 
 /**
