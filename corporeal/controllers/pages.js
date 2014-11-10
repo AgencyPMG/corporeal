@@ -9,7 +9,7 @@ var Templates = require('../models/template');
 var PageServe = require('./pageserve');
 
 var PagesController = function PagesController() {
-
+    this.pageServe = new PageServe();
 }
 
 /**
@@ -114,16 +114,16 @@ PagesController.prototype.savePageEdit = function(req, res) {
         url: url,
         tags: tags,
         templateData: JSON.stringify(options)
-    }, function(error) {
+    }, _.bind(function(error) {
         if(error) {
             req.session.error = error;
             res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
             return;
         }
-        PageServe.clearCache();
+        this.pageServe.clearCache();
         req.session.message = 'Save Successful';
         res.redirect(res.locals.baseUrl + '/pages/edit/' + pageid);
-    });
+    }, this));
 }
 
 PagesController.prototype.deletePage = function(req, res) {
@@ -180,15 +180,15 @@ PagesController.prototype.savePage = function(req, res) {
         page.id = pageid;
     }
 
-    page.save(function(error, newPage) {
+    page.save(_.bind(function(error, newPage) {
         if(error) {
             req.session.error = error;
             res.redirect(res.locals.baseUrl + '/pages/add');
             return;
         }
-        PageServe.clearCache();
+        this.pageServe.clearCache();
         res.redirect(res.locals.baseUrl + '/pages/edit/' + newPage.id);
-    });
+    }, this));
 }
 
 
@@ -208,4 +208,4 @@ PagesController.prototype.getTemplateBaseUrl = function(req) {
     return req.protocol + "://" + req.get('host') + config.get('corporeal.template.baseUrl');
 }
 
-module.exports = new PagesController();
+module.exports = PagesController;

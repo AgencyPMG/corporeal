@@ -3,7 +3,7 @@
  */
 
 var config = require('super-config');
-var Setup = require('./setup');;
+var Setup = require('./setup');
 
 var Corporeal = function() {
     config.loadConfig([

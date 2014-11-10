@@ -189,4 +189,4 @@ UserController.prototype.deleteUser = function(req, res) {
     });
 }
 
-module.exports = new UserController();
+module.exports = UserController;

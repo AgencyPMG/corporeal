@@ -39,8 +39,8 @@ Setup.prototype.run = function() {
     this.setupSession();
     this.setupPassportSupport();
 
+    this.setupGlobalTemplateVariables();
     this.setupCsrfProtection();
-
     this.setupRoutes();
 
 
@@ -155,6 +155,16 @@ Setup.prototype.setupCsrfProtection = function() {
             res.locals.error = JSON.stringify(res.locals.error);
         }
         res.locals.navmenu = new NavMenu(req);
+        next();
+    });
+}
+
+/**
+ * Setups up the global variables that are used site wide
+ */
+Setup.prototype.setupGlobalTemplateVariables = function() {
+    this.app.use(this.baseUrl, function(req, res, next) {
+        res.locals.whitelabel_name = config.get('corporeal.whitelabel.name', 'Corporeal');
         next();
     });
 }

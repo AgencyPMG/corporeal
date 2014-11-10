@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+
+{% block stylesheets %}
+<style type="text/css">
+
+.container {
+    max-width: 100% !important;
+}
+
+.sampletable tr {
+    display: none;
+}
+.sampletable .selected {
+    display: table-row;
+}
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+require(['jquery'], function() {
+
+    var getCSVTable = function() {
+        var csv = '';
+        $('.sampletable tr').each(function() {
+            if (!$(this).hasClass('selected')) {
+                return;
+            }
+            var row = [];
+            $(this).find('td').each(function() {
+                row.push('"' + $(this).text().replace(/\"/g, '""') + '"');
+            });
+            csv += row.join(',') + '\n';
+        });
+        return csv;
+    }
+
+    var templateSwitcher = function() {
+        var currentTemplate = $('select[name="template"]').val();
+        $('.sampletable tr').removeClass('selected');
+        $('.sampletable .'+currentTemplate).addClass('selected');
+        $('.sampledownload')
+            .attr('href', 'data:application/csv;charset=utf-8,' + encodeURIComponent(getCSVTable()))
+            .attr('download', 'sample.csv');
+
+    }
+    templateSwitcher();
+    $('select[name="template"]').on('change', templateSwitcher);
+
+
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" action="{{baseUrl}}/pages/bulksave">
+<input type="hidden" value="{{csrf_token}}" name="_csrf" />
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Bulk Upload Pages</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        Template:
+        <select name="template">
+            {% for template in templates %}
+                <option value="{{template.id}}">{{template.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <h3> Sample File </h3>
+        <a href='#' target="_blank" class="sampledownload">Download Sample</a>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <table class="table sampletable">
+            {% for template in templates %}
+                <tr class="header-row {{template.id}}" data-templateid="{{template.id}}">
+                    <td>name</td>
+                    {% for key, value in template.variables %}
+                        <td>{{key}}</td>
+                    {% endfor %}
+                </tr>
+                <tr class="body-row {{template.id}}" data-templateid="{{template.id}}">
+                    <td>A name for the page</td>
+                    {% for key, value in template.variables %}
+                        <td>{{value.default if value.default else value.type}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <input type="checkbox" id="downloadPagesAfterCompetion" name="downloadPagesAfterCompetion" value="checked" />
+        <label for="downloadPagesAfterCompetion"> Download Files After Competition</label>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <input type="file" name="pagesfile">
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <input type="submit" value="Upload" class="button" />
+    </div>
+</div>
+
+</form>
+{% endblock %}
