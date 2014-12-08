@@ -51,28 +51,23 @@ BulkUploadPagesController.prototype.upload = function(req, res) {
 
 BulkUploadPagesController.prototype.downloadBulkFiles = function(req, res, pages) {
 
+    res.setHeader('Content-disposition', 'attachment; filename=download.xml');
     var p = new PageServe();
-    var archive = archiver('zip');
-    archive.on('error', function(err) {
-        res.status(500).send({error: err.message});
-    });
-    res.on('close', function() {
-        return res.status(200).send('OK').end();
-    });
-
-    res.attachment('download.zip');
-    archive.pipe(res);
-    for(var page in pages) {
+    var str = '';
+    for(var index in pages) {
         //get a request from the server
-        var page = pages[page];
+        var page = pages[index];
         try {
-            archive.append(p.renderPageToString(page), {name: page.name + '.xml'});
+            str += '\n' + p.renderPageToString(page, {
+                downloadedpage: true,
+                downloadedpagenumber: index,
+                downloadedpagenumbertotal: pages.length
+            });
         } catch(e) {
             console.log('BulkUploadPagesController', e);
         }
     }
-    archive.finalize();
-
+    res.send(str);
 }
 
 /**

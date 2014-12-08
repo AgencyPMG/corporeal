@@ -116,7 +116,7 @@ PageServe.prototype.servePage = function(req, res, page) {
     }
 }
 
-PageServe.prototype.renderPageToString = function(page) {
+PageServe.prototype.renderPageToString = function(page, extradata) {
     var template = Templates.getTemplateForPage(page);
     if (!template) {
         return null;
@@ -130,9 +130,10 @@ PageServe.prototype.renderPageToString = function(page) {
         template.files.baseTemplateDirectory + '/' + template.files.startPage,
         {encoding: 'utf8'}
     );
+
     return nunjucks.renderString(
         template,
-        page.get('templateData')
+        _.extend({}, page.get('templateData'), extradata)
     );
 }
 
