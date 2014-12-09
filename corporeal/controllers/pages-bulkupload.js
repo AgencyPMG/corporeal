@@ -58,11 +58,12 @@ BulkUploadPagesController.prototype.downloadBulkFiles = function(req, res, pages
         //get a request from the server
         var page = pages[index];
         try {
-            str += '\n' + p.renderPageToString(page, {
+            str += p.renderPageToString(page, {
                 downloadedpage: true,
                 downloadedpagenumber: index,
                 downloadedpagenumbertotal: pages.length
             });
+            str += "\n";
         } catch(e) {
             console.log('BulkUploadPagesController', e);
         }
